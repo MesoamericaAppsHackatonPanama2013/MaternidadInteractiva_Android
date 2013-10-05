@@ -52,7 +52,7 @@ public class MainActivity extends Activity implements UpdateListener{
 	
 	public void TestSMS(View v) {
 		SmsManager sms = SmsManager.getDefault();
-		sms.sendTextMessage("5554", null, "mensaje test!" ,null, null);
+		sms.sendTextMessage("5554", null, "52502724168c525006000001" ,null, null);
 		Log.d("lol", "enviado SMS");
 	}
 }

@@ -15,15 +15,12 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
-import android.util.JsonReader;
 
 public class ReceptorSMS extends BroadcastReceiver {
 	
@@ -38,7 +35,6 @@ public class ReceptorSMS extends BroadcastReceiver {
 		HttpPost httpPost = new HttpPost("http://maternidadinteractiva.jit.su/alarm");
 		List<NameValuePair> dataPost = new ArrayList<NameValuePair>(2);
 		HttpResponse response;
-		JSONObject json;
 		
 		//si no recibe nada retornar
 		Bundle extras = intent.getExtras();
@@ -58,12 +54,11 @@ public class ReceptorSMS extends BroadcastReceiver {
 			
 			//Enviamos los datos al servidor
 			dataPost.add(new BasicNameValuePair("source",mensaje.getOriginatingAddress()));
-			dataPost.add(new BasicNameValuePair("source",mensaje.getMessageBody()));
+			dataPost.add(new BasicNameValuePair("id",mensaje.getMessageBody()));
 			
 			try {
 				httpPost.setEntity(new UrlEncodedFormEntity(dataPost));
 				response = webclient.execute(httpPost);
-				json = new JSONObject(EntityUtils.toString(response.getEntity()));
 				
 				SMSIntent = new Intent("SMSMail.Intent.MAIN");
 				SMSIntent.putExtra("enviador", mensaje.getOriginatingAddress());
@@ -85,10 +80,7 @@ public class ReceptorSMS extends BroadcastReceiver {
 	        } catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+	        }
 		}
 	}
 }
